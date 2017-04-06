@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/transform"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+      xmlns:owl="http://www.w3.org/2002/07/owl#"
+      xmlns:dct="http://purl.org/dc/terms/"
+      xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+      xmlns:bibo="http://purl.org/ontology/bibo/"
+      xmlns:foaf="http://xmlns.com/foaf/0.1/"
+      xmlns:vann="http://purl.org/vocab/vann/"
+      xmlns:qb="http://purl.org/linked-data/cube#"
+      xmlns:qbv="https://privatealpha.com/ontology/data-cube-viz/1#"
+      xml:lang="en">
+  <head>
+    <title about="#" property="dct:title">Data Cube Visualization Ontology</title>
+    <base href="https://privatealpha.com/ontology/data-cube-viz/1"/>
+    <meta about="#" property="vann:preferredNamespacePrefix" content="qbv"/>
+    <link about="#" rel="rdfs:isDefinedBy bibo:uri" href="#"/>
+    <link about="#" rel="owl:imports" href="http://purl.org/linked-data/cube#"/>
+  </head>
+  <body>
+    <h2>Data Cube Visualization Ontology</h2>
+    <section about="#" typeof="owl:Ontology bibo:Webpage">
+      <dl>
+        <dt>Author</dt>
+        <dd><a rel="external dct:creator" href="http://doriantaylor.com/person/dorian-taylor#me"><span property="foaf:name">Dorian Taylor</span></a></dd>
+        <dt>Version</dt>
+        <dd about="#" property="owl:versionInfo">0.1</dd>
+        <dt>Created</dt>
+        <dd property="dct:created" datatype="xsd:dateTime" content="2016-10-12T16:28:11Z">October 12, 2016</dd>
+        <!--<dt>Updated</dt>
+        <dd property="2012-12-12T16:04:50-0800">December 12, 2012</dd>-->
+        <dt>Namespace URI</dt>
+        <dd><a href="#">https://privatealpha.com/ontology/data-cube-viz/1#</a></dd>
+        <dt>Preferred Namespace Prefix</dt>
+        <dd about="#" property="vann:preferredNamespacePrefix">qbv</dd>        
+      </dl>
+      <p property="rdfs:comment dct:description">This is a small vocabulary that augments RDF Data Cube with a mechanism for matching data visualizations.</p>
+      <p>Context: we <em>have</em> a <a rel="external" href="https://www.w3.org/TR/vocab-data-cube/" title="The RDF Data Cube Vocabulary">Data Cube</a> resource and we <em>want</em> to apply the appropriate visualization to it. Rather, we may have <em>several</em> of these resources and we want to dispatch them to one or more visualization mechanisms.</p>
+      <p>This document does not specify the visualization mechanism, it merely points to it. Indeed, the mechanism need not strictly be <em>visualization</em>, but rather any kind of representational transformation.</p>
+      <p>We can imagine, much like we do with <a rel="external" href="https://www.w3.org/Style/CSS/" title="Cascading Style Sheets">CSS</a> or <a rel="external" href="https://www.w3.org/2005/04/fresnel-info/">Fresnel</a>, using the identity, structure and content of the source data to inform the dispatching. Let us begin by taking a census of the different features of Data Cube:</p>
+      <ul>
+        <li>The classes, <samp>qb:DataSet</samp>, <samp>qb:ObservationGroup</samp> and <samp>qb:Slice</samp>,</li>
+        <li>Subclasses of these classes,</li>
+        <li>Individual instances of these classes.</li>
+      </ul>
+      <p>This is a good start, however we are much more likely to encounter instances of <samp>qb:DataSet</samp> proper, which only vary in terms of their <samp>qb:DataStructureDefinition</samp>. Therefore:</p>
+      <ul>
+        <li>References to specific <samp>qb:DataStructureDefinition</samp> resources,</li>
+        <li><samp>qb:Slice</samp> resources that reference a particular <samp>qb:SliceKey</samp>.</li>
+      </ul>
+      <p>Still, up to this point, the selection criteria all depend on knowing the identity of the resource, class, data structure, or slice key. In the likely case that any of these are generated programmatically, it will be necessary to match visualizations based on <em>content</em>. For example:</p>
+      <ul>
+        <li>If a structure has one <samp>qb:dimension</samp>, dispatch to visualization <var>A</var>; if two, dispatch to <var>B</var>; otherwise leave it alone</li>
+        <li>Or if a <samp>qb:dimension</samp> is known to be an interval or datetime, then dispatch to a <a rel="external" href="https://en.wikipedia.org/wiki/Time_series" title="Time series &#x2014; Wikipedia">time series</a></li>
+        <li>Or if a <samp>qb:dimension</samp> is a zone on a map, forward to a <a rel="external" href="https://en.wikipedia.org/wiki/Choropleth_map" title="Choropleth map &#x2014; Wikipedia">choropleth</a></li>
+        <li>Or if <samp>qb:measure</samp> properties contain descriptive statistics, then dispatch to a <a rel="external" href="https://en.wikipedia.org/wiki/Box_plot" title="Box plot &#x2014; Wikipedia">box plot</a></li>
+        <li>Or if the resource being rendered is a <samp>qb:Slice</samp> that fixes a particular dimension, like the month of a year, forward to a year-over-year time series&#x2026;</li>
+      </ul>
+      <p>As such, we need to be able to dispatch based on the quantity and content of <samp>qb:dimension</samp>, <samp>qb:measure</samp> and <samp>qb:attribute</samp> properties.</p>
+      <section>
+        <h4>TODO</h4>
+        <ul>
+          <li>Describe a candidate selection algorithm</li>
+          <li>Handle qb:attribute/qb:AttributeProperty meaningfully</li>
+          <li>Some kind of proscription or negation mechanism, to specify rules we <em>don't</em> want to match</li>
+        </ul>
+      </section>
+      <p>As usual, the master machine-readable spec is embedded in this document, and there are <a rel="alternate" type="application/rdf+xml" href="1.rdf">RDF/XML</a> and <a rel="alternate" type="text/n3" href="1.n3">N3/Turtle</a> variants.</p>
+    </section>
+    <section>
+      <h2>Classes</h2>
+      <figure>
+        <img src="example.svg" style="width: 100%; height: auto" alt=""/>
+      </figure>
+      <section id="Selector" about="[qbv:Selector]" typeof="owl:Class">
+        <h4 property="rdfs:label">Selector</h4>
+        <p property="rdfs:comment">The selector is the main entity that ties together the instructions for matching data sets with the processing target.</p>
+        <blockquote class="note">
+          <p property="skos:usageNote" content="Since a qbv:Selector is a qb:ComponentSet, we can reuse qb:dimension, qb:measure and qb:attribute.">Since a <samp>qbv:Selector</samp> is a <samp>qb:ComponentSet</samp>, we can reuse <samp>qb:dimension</samp>, <samp>qb:measure</samp> and <samp>qb:attribute</samp>.</p>
+        </blockquote>
+        <dl>
+          <dt>Subclass of:</dt>
+          <dd><a rel="external rdfs:subClassOf" resource="http://purl.org/linked-data/cube#ComponentSet" href="https://www.w3.org/TR/vocab-data-cube/#dfn-qb-componentset">qb:ComponentSet</a></dd>
+          <dt>In domain of:</dt>
+          <!--<dd><a rel="external" rev="rdfs:domain" resource="" href="">qb:componentProperty</a></dd>-->
+          <dd><a rev="rdfs:domain" href="#class">qbv:class</a></dd>
+          <dd><a rev="rdfs:domain" href="#instance">qbv:instance</a></dd>
+          <dd><a rev="rdfs:domain" href="#structure">qbv:structure</a></dd>
+          <dd><a rev="rdfs:domain" href="#target">qbv:target</a></dd>
+          <dd><a rev="rdfs:domain" href="#fix">qbv:fix</a></dd>
+          <dd><a rev="rdfs:domain" href="#dimensions">qbv:dimensions</a></dd>
+          <dd><a rev="rdfs:domain" href="#min-dimensions">qbv:min-dimensions</a></dd>
+          <dd><a rev="rdfs:domain" href="#max-dimensions">qbv:max-dimensions</a></dd>
+        </dl>
+      </section>
+    </section>
+    <section>
+      <h2>Properties</h2>
+      <h3>Object Properties</h3>
+      <section id="class" about="[qbv:class]" typeof="owl:ObjectProperty">
+        <h4 property="rdfs:label">class</h4>
+        <p property="rdfs:comment">Designates a class that should be chosen by this selector.</p>
+        <blockquote class="note">
+          <p property="skos:usageNote" content="If unspecified, we should assume the selector matches the union of qb:DataSet, qb:Slice, and qb:ObservationGroup.">If unspecified, we should assume the selector matches the union of <samp>qb:DataSet</samp>, <samp>qb:Slice</samp>, and <samp>qb:ObservationGroup</samp>.</p>
+        </blockquote>
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+          <dt>Range:</dt>
+          <dd><a rel="external rdfs:range" resource="http://www.w3.org/2000/01/rdf-schema#Class" href="https://www.w3.org/TR/rdf-schema/#ch_class">rdfs:Class</a></dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <section id="instance" about="[qbv:instance]" typeof="owl:ObjectProperty">
+        <h4 property="rdfs:label">instance</h4>
+        <p property="rdfs:comment">Designates an explicit resource which will be the data source for the selector.</p>
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <section id="structure" about="[qbv:structure]" typeof="owl:ObjectProperty">
+        <h4 property="rdfs:label">structure</h4>
+        <p property="rdfs:comment">Designates an explicit resource which will be the data source for the selector.</p>
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+          <dt>Range:</dt>
+          <dd rel="rdfs:range">
+            <span about="_:uc" typeof="owl:Class">
+              <span inlist="" property="owl:unionOf" resource="http://purl.org/linked-data/cube#DataStructureDefinition">
+                <a rel="external" href="https://www.w3.org/TR/vocab-data-cube/#dsd">qb:DataStructureDefinition</a>
+              </span>
+              &#x222a;
+              <span inlist="" property="owl:unionOf" resource="http://purl.org/linked-data/cube#SliceKey">
+                <a rel="external" href="https://www.w3.org/TR/vocab-data-cube/#slices">qb:SliceKey</a>
+              </span>
+            </span>
+          </dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <section id="target" about="[qbv:target]" typeof="owl:FunctionalProperty owl:ObjectProperty">
+        <h4 property="rdfs:label">target</h4>
+        <p property="rdfs:comment">Designates the target of the selector, the resource that will perform the operation. This resource can be anything (e.g. a program, or an XSLT transform).</p>
+        <!--<blockquote class="note">
+          <p property="skos:usageNote"></p>
+        </blockquote>-->
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <section id="fix" about="[qbv:fix]" typeof="owl:ObjectProperty">
+        <h4 property="rdfs:label">fix</h4>
+        <p property="rdfs:comment">Designates a component property which is fixed in a qb:Slice.</p>
+        <!--<blockquote class="note">
+          <p property="skos:usageNote"></p>
+        </blockquote>-->
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+          <dt>Range:</dt>
+          <dd><a rel="external rdfs:range" resource="http://purl.org/linked-data/cube#ComponentProperty" href="https://www.w3.org/TR/vocab-data-cube/#dsd-dimensions">qb:ComponentProperty</a></dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <h3>Datatype Properties</h3>
+      <section id="dimensions" about="[qbv:dimensions]" typeof="owl:DatatypeProperty">
+        <h4 property="rdfs:label">dimensions</h4>
+        <p property="rdfs:comment">Specifies the exact number of data dimensions the target is capable of rendering.</p>
+        <!--<blockquote class="note">
+          <p property="skos:usageNote"></p>
+        </blockquote>-->
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+          <dt>Range:</dt>
+          <dd><a rel="external rdfs:range" resource="http://www.w3.org/2001/XMLSchema#integer" href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</a></dd>
+          <dt>Cardinality:</dt>
+          <dd property="owl:cardinality" datatype="xsd:integer">1</dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <section id="min-dimensions" about="[qbv:min-dimensions]" typeof="owl:DatatypeProperty">
+        <h4 property="rdfs:label">min-dimensions</h4>
+        <p property="rdfs:comment">Specifies the minimum number of data dimensions the target is capable of rendering.</p>
+        <!--<blockquote class="note">
+          <p property="skos:usageNote"></p>
+        </blockquote>-->
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+          <dt>Range:</dt>
+          <dd><a rel="external rdfs:range" resource="http://www.w3.org/2001/XMLSchema#integer" href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</a></dd>
+          <dt>Cardinality:</dt>
+          <dd property="owl:cardinality" datatype="xsd:integer">1</dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+      <section id="max-dimensions" about="[qbv:max-dimensions]" typeof="owl:DatatypeProperty">
+        <h4 property="rdfs:label">max-dimensions</h4>
+        <p property="rdfs:comment">Specifies the maximum number of data dimensions the target is capable of rendering.</p>
+        <!--<blockquote class="note">
+          <p property="skos:usageNote"></p>
+        </blockquote>-->
+        <dl>
+          <dt>Domain:</dt>
+          <dd><a rel="rdfs:domain" href="#Selector">qbv:Selector</a></dd>
+          <dt>Range:</dt>
+          <dd><a rel="external rdfs:range" resource="http://www.w3.org/2001/XMLSchema#integer" href="http://www.w3.org/TR/xmlschema-2/#positiveInteger">xsd:positiveInteger</a></dd>
+          <dt>Cardinality:</dt>
+          <dd property="owl:cardinality" datatype="xsd:integer">1</dd>
+        </dl>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+    </section>
+    <!--
+    <section>
+      <h2>Individuals</h2>
+      <p>This vocabulary contains a number of predefined roles.</p>
+      <section id="Officers" about="[soco:Officers]" typeof="skos:ConceptScheme">
+        <h4 property="rdfs:label">Officers</h4>
+        <p property="rdfs:comment">This is a concept scheme to contain the standard roles of officers.</p>
+        <p><a rel="rdfs:isDefinedBy" href="#">Back to Top</a></p>
+      </section>
+    </section>-->
+    <section>
+      <h2>References</h2>
+      <ul>
+        <li><a rel="external" href="https://www.w3.org/TR/vocab-data-cube/">The RDF Data Cube Vocabulary</a></li>
+        <li><a rel="external" href="https://www.w3.org/Style/CSS/">Cascading Style Sheets</a></li>
+        <li><a rel="external" href="https://www.w3.org/2005/04/fresnel-info/">Fresnel - Display Vocabulary for RDF</a></li>
+      </ul>
+    </section>
+  </body>
+</html>
