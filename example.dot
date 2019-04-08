@@ -1,0 +1,87 @@
+digraph {
+    graph [compound=true,bgcolor=transparent];    //,rankdir=LR];
+    node [shape=box,color="#eeeeee",fontcolor="#eeeeee",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif"];
+    edge [fontsize=10,color="#eeeeee",fontcolor="#eeeeee",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif"];
+    qbv_Selector [label="qbv:Selector"];
+    
+    subgraph {
+        node [style=dashed];
+        subgraph cluster_derp {
+            graph [label="rdfs:Class",color="#eeeeee",fontcolor="#eeeeee",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif",style=dashed];
+            qb_DataSet [label="qb:DataSet"];
+            qb_Slice [label="qb:Slice"];
+            qb_ObservationGroup [label="qb:ObservationGroup"];
+        }
+        qb_DataStructureDefinition [label="qb:DataStructureDefinition"];
+        qb_SliceKey [label="qb:SliceKey"];
+        qb_ComponentSpecification [label="qb:ComponentSpecification"];
+        qb_ComponentSet [label="qb:ComponentSet"];
+        qb_ComponentProperty [label="qb:ComponentProperty"];
+        qb_MeasureProperty [label="qb:MeasureProperty"];
+        qb_DimensionProperty [label="qb:DimensionProperty"];
+        HUH [label="?"];
+        //WUT [label="?"];
+        xsd_integer [label="xsd:integer"];
+    }
+    subgraph {
+        edge [label="qbv:instance",concentrate=true];
+        qbv_Selector -> qb_DataSet;
+        qbv_Selector -> qb_Slice;
+        qbv_Selector -> qb_ObservationGroup;
+    }
+    qbv_Selector -> HUH [label="qbv:target"];
+    qbv_Selector -> qb_ObservationGroup [label="qbv:class",lhead=cluster_derp];
+    qbv_Selector -> xsd_integer [label="qbv:dimensions"];
+    qbv_Selector -> qb_ComponentProperty [label="qbv:fix"];
+    
+    subgraph {
+        edge [label="qbv:structure"];
+        qbv_Selector -> qb_DataStructureDefinition;
+        qbv_Selector -> qb_SliceKey;
+    }
+    /*
+    subgraph {
+        edge [label="qbv:fix"];
+        qbv_Selector -> qb_MeasureProperty;
+        qbv_Selector -> qb_DimensionProperty;
+    }*/
+    subgraph {
+        edge [style=dashed];
+        qb_DataSet -> qb_DataStructureDefinition [label="qb:structure"];
+        qb_DataSet -> qb_SliceKey [label="qb:sliceKey"];
+        qb_Slice -> qb_SliceKey [label="qb:sliceStructure"];
+        qb_DataStructureDefinition -> qb_SliceKey [label="qb:sliceKey"];
+        qb_DataStructureDefinition -> qb_ComponentSpecification [label="qb:component"];
+        subgraph {
+            edge [label="qb:componentProperty"];
+            qb_SliceKey -> qb_DimensionProperty;
+            qb_SliceKey -> qb_MeasureProperty;
+        }
+        subgraph {
+            edge [label="rdfs:subClassOf"];
+            qbv_Selector -> qb_ComponentSet;
+            qb_ComponentSpecification -> qb_ComponentSet;
+            qb_DataStructureDefinition -> qb_ComponentSet;
+            qb_SliceKey -> qb_ComponentSet;
+            qb_MeasureProperty -> qb_ComponentProperty;
+            qb_DimensionProperty -> qb_ComponentProperty;
+        }            
+        /*
+        subgraph {
+            edge [label="rdf:type"];
+            HUH -> qb_DataSet;
+            HUH -> qb_Slice;
+            HUH -> qb_ObservationGroup;
+        }*/
+        subgraph {
+            edge [label="qb:measure"];
+            qb_ComponentSpecification -> qb_MeasureProperty;
+            qbv_Selector -> qb_MeasureProperty;
+        }
+        subgraph {
+            edge [label="qb:dimension"];
+            qb_ComponentSpecification -> qb_DimensionProperty;
+            qbv_Selector -> qb_DimensionProperty;
+        }
+    }
+}
