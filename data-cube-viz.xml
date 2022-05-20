@@ -11,14 +11,15 @@
       xmlns:foaf="http://xmlns.com/foaf/0.1/"
       xmlns:vann="http://purl.org/vocab/vann/"
       xmlns:qb="http://purl.org/linked-data/cube#"
-      xmlns:qbv="https://privatealpha.com/ontology/data-cube-viz/1#"
+      xmlns:qbv="https://vocab.methodandstructure.com/data-cube-viz#"
       xml:lang="en">
   <head>
     <title about="#" property="dct:title">Data Cube Visualization Ontology</title>
-    <base href="https://privatealpha.com/ontology/data-cube-viz/1"/>
+    <base href="https://vocab.methodandstructure.com/data-cube-viz"/>
     <meta about="#" property="vann:preferredNamespacePrefix" content="qbv"/>
     <link about="#" rel="rdfs:isDefinedBy bibo:uri" href="#"/>
     <link about="#" rel="owl:imports" href="http://purl.org/linked-data/cube#"/>
+    <link rel="bibo:status" href="http://purl.org/bibo/status/draft"/>
   </head>
   <body>
     <h2>Data Cube Visualization Ontology</h2>
@@ -33,9 +34,9 @@
         <!--<dt>Updated</dt>
         <dd property="2012-12-12T16:04:50-0800">December 12, 2012</dd>-->
         <dt>Namespace URI</dt>
-        <dd><a href="#">https://privatealpha.com/ontology/data-cube-viz/1#</a></dd>
+        <dd><a href="#">https://vocab.methodandstructure.com/data-cube-viz#</a></dd>
         <dt>Preferred Namespace Prefix</dt>
-        <dd about="#" property="vann:preferredNamespacePrefix">qbv</dd>        
+        <dd about="#" property="vann:preferredNamespacePrefix">qbv</dd>
       </dl>
       <p property="rdfs:comment dct:description">This is a small vocabulary that augments RDF Data Cube with a mechanism for matching data visualizations.</p>
       <p>Context: we <em>have</em> a <a rel="external" href="https://www.w3.org/TR/vocab-data-cube/" title="The RDF Data Cube Vocabulary">Data Cube</a> resource and we <em>want</em> to apply the appropriate visualization to it. Rather, we may have <em>several</em> of these resources and we want to dispatch them to one or more visualization mechanisms.</p>
@@ -73,7 +74,7 @@
     <section>
       <h2>Classes</h2>
       <figure>
-        <img src="example.svg" style="width: 100%; height: auto" alt=""/>
+        <img src="data-cube-viz-classes.svg" style="width: 100%; height: auto" alt=""/>
       </figure>
       <section id="Selector" about="[qbv:Selector]" typeof="owl:Class">
         <h4 property="rdfs:label">Selector</h4>

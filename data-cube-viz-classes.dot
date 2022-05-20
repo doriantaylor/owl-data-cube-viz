@@ -1,13 +1,13 @@
 digraph {
     graph [compound=true,bgcolor=transparent];    //,rankdir=LR];
-    node [shape=box,color="#eeeeee",fontcolor="#eeeeee",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif"];
-    edge [fontsize=10,color="#eeeeee",fontcolor="#eeeeee",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif"];
+    node [shape=box,color="#000000",fontcolor="#000000",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif"];
+    edge [fontsize=10,color="#000000",fontcolor="#000000",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif"];
     qbv_Selector [label="qbv:Selector"];
     
     subgraph {
         node [style=dashed];
         subgraph cluster_derp {
-            graph [label="rdfs:Class",color="#eeeeee",fontcolor="#eeeeee",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif",style=dashed];
+            graph [label="rdfs:Class",color="#000000",fontcolor="#000000",fontname="Lucida Grande, Lucida Sans Unicode, sans-serif",style=dashed];
             qb_DataSet [label="qb:DataSet"];
             qb_Slice [label="qb:Slice"];
             qb_ObservationGroup [label="qb:ObservationGroup"];
